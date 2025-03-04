@@ -15,42 +15,53 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid segment information' }, { status: 400 });
     }
     
-    // Count number of segments (estimate) for the prompt
-    //const segmentCount = (segmentInfo.match(/\n\n/g) || []).length + 1;
-    
     const prompt = `
-    You are a specialized LinkedIn Sales Navigator outreach strategist with deep expertise in B2B targeting and account-based marketing. Your knowledge extends to market research industry segments, financial services needs, and executive decision-making patterns.
+    You are a specialized LinkedIn Sales Navigator outreach strategist with deep expertise in B2B targeting and account-based marketing. Your task is to transform the segment information below into a structured LinkedIn Sales Navigator targeting strategy.
+
+    FORMAT YOUR RESPONSE EXACTLY LIKE THIS EXAMPLE (but with your own content):
+
+    1️⃣ [SEGMENT NAME]
+    Why This Segment?
+    [2-3 sentences explaining why this segment needs fractional CFO services, describing their complexity and pain points]
     
-    Based on the market research segment information below, create a comprehensive LinkedIn Sales Navigator targeting strategy for each segment. Present your response in this exact format:
-
-    For each segment, use numbered headings (e.g., "1. [SEGMENT NAME]") followed by:
-
-    A. Geographic Parameters:
-    * List 4-6 US states/regions where this segment has highest concentration
-
-    B. Company Filters:
-    * Industry: [specific classifications]
-    * Company Size: [headcount range]
-    * Revenue: [revenue range]
-    * Growth Indicators: [specific metrics]
-    * Company Type: [business entity types]
-
-    C. Decision-Maker Positions:
-    1. [Position 1]: [Title variations]
-    2. [Position 2]: [Title variations]
-    ... (include at least 20 positions)
-
-    D. Advanced Intent/Behavioral Indicators:
-    * [List 4-6 specific indicators]
+    Key Challenges:
+    👉 [Challenge 1]—[Brief explanation of the challenge]
+    👉 [Challenge 2]—[Brief explanation of the challenge]
+    👉 [Challenge 3]—[Brief explanation of the challenge]
+    👉 [Challenge 4]—[Brief explanation of the challenge]
+    
+    🎯 Sales Navigator Filters:
+    ✅ Job Titles (Financial Decision-Makers & Influencers):
+    [List 6-10 job titles, one per line]
+    
+    ✅ Industry:
+    [List 3-5 industry categories, one per line]
+    
+    ✅ Company Headcount:
+    [Specify employee range]
+    
+    ✅ Company Type:
+    [List company types, one per line]
+    
+    ✅ Keywords in Company Name:
+    [List relevant keywords in quotation marks]
+    
+    ✅ Boolean Search Query:
+    [Provide a sample boolean search string using OR operators]
+    
+    Best Intent Data Signals
+    🔹 [Signal 1] (Brief explanation in parentheses)
+    🔹 [Signal 2] (Brief explanation in parentheses)
+    🔹 [Signal 3] (Brief explanation in parentheses)
+    🔹 [Signal 4] (Brief explanation in parentheses)
 
     IMPORTANT INSTRUCTIONS:
+    - Use the exact emoji formatting shown above (1️⃣, 👉, 🎯, ✅, 🔹)
     - Do NOT include any introductory text, disclaimers, or conclusions
-    - Start immediately with the first segment heading
-    - Do NOT include any notes or explanations outside the required format
-    - Focus only on decision-makers who have authority to engage services (exclude internal finance roles)
-    - End after completing the last segment - do not add any closing remarks
-    - Be specific and actionable with all targeting parameters
-    - Use bullet points exactly as shown in the format above
+    - Start immediately with "1️⃣" and the first segment name
+    - Extract and transform information from the provided segment analysis
+    - Focus on creating practical Sales Navigator targeting parameters
+    - End after completing the last segment with no closing remarks
 
     ${segmentInfo.substring(0, 20000)}
     `;
