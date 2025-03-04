@@ -6,7 +6,7 @@ import { z } from 'zod';
 import Button from './Button';
 
 const formSchema = z.object({
-  industry: z.string().min(2, 'Industry name is required'),
+  segmentInfo: z.string().min(10, 'Please provide segment information (minimum 10 characters)'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -34,18 +34,17 @@ export default function ResearchForm({ onSubmit }: { onSubmit: (values: FormValu
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
       <div>
-        <label htmlFor="industry" className="block text-[#f7f8f8] font-medium mb-2">
-          Target Industry
+        <label htmlFor="segmentInfo" className="block text-[#f7f8f8] font-medium mb-2">
+          Market Research Segment Information
         </label>
-        <input
-          id="industry"
-          type="text"
-          className="input-field text-lg"
-          placeholder="e.g., Healthcare, Manufacturing, SaaS, Finance"
-          {...register('industry')}
+        <textarea
+          id="segmentInfo"
+          className="input-field text-base w-full min-h-[200px]"
+          placeholder="Paste your market research segments information here..."
+          {...register('segmentInfo')}
         />
-        {errors.industry && (
-          <p className="mt-2 text-red-400 text-sm">{errors.industry.message}</p>
+        {errors.segmentInfo && (
+          <p className="mt-2 text-red-400 text-sm">{errors.segmentInfo.message}</p>
         )}
       </div>
       
@@ -56,7 +55,7 @@ export default function ResearchForm({ onSubmit }: { onSubmit: (values: FormValu
           size="lg" 
           className="w-full"
         >
-          Find Target Segments
+          Generate Targeting Strategy
         </Button>
       </div>
     </form>

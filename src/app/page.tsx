@@ -6,15 +6,12 @@ import ResearchForm from '@/components/ResearchForm';
 import ResearchResult from '@/components/ResearchResult';
 
 interface FormData {
-  industry: string;
+  segmentInfo: string;
 }
 
 export default function Home() {
   const [generatedResearch, setGeneratedResearch] = useState<string | null>(null);
-  const [enhancedResearch, setEnhancedResearch] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isEnhancing, setIsEnhancing] = useState(false);
-  const [currentIndustry, setCurrentIndustry] = useState<string>("");
   const [progressStatus, setProgressStatus] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
@@ -22,36 +19,30 @@ export default function Home() {
     setError(null);
     setIsGenerating(true);
     setGeneratedResearch('');
-    setEnhancedResearch(null);
-    setProgressStatus('Identifying target segments...');
-    setCurrentIndustry(formData.industry);
+    setProgressStatus('Creating LinkedIn Sales Navigator strategy...');
 
     try {
-      // First prompt: Get initial target segments
-      const initialResponse = await fetch('/api/generate-segments', {
+      const response = await fetch('/api/generate-segments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ industry: formData.industry }),
+        body: JSON.stringify({ segmentInfo: formData.segmentInfo }),
       });
 
-      if (!initialResponse.ok) {
-        throw new Error(`Failed to generate initial segments: ${initialResponse.status}`);
+      if (!response.ok) {
+        throw new Error(`Failed to generate strategy: ${response.status}`);
       }
 
-      const initialData = await initialResponse.json();
+      const data = await response.json();
       
-      if (!initialData.result) {
-        throw new Error('No result returned from segment generation');
+      if (!data.result) {
+        throw new Error('No result returned from strategy generation');
       }
       
-      const initialSegments = initialData.result;
-      
-      // Display initial results
-      setGeneratedResearch(initialSegments);
+      setGeneratedResearch(data.result);
       
     } catch (error) {
       console.error('Error generating research:', error);
-      setError('An error occurred while generating the market research. Please try again.');
+      setError('An error occurred while generating the targeting strategy. Please try again.');
       setGeneratedResearch(null);
     } finally {
       setIsGenerating(false);
@@ -59,58 +50,18 @@ export default function Home() {
     }
   };
 
-  const enhanceSegments = async (segments: string, industry: string) => {
-    setError(null);
-    setIsEnhancing(true);
-    
-    try {
-      const enhancedResponse = await fetch('/api/enhance-segments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          industry,
-          segments
-        }),
-      });
-
-      if (!enhancedResponse.ok) {
-        throw new Error(`Failed to enhance segments: ${enhancedResponse.status}`);
-      }
-
-      const enhancedData = await enhancedResponse.json();
-      
-      if (enhancedData.result) {
-        setGeneratedResearch(null); // Hide the original research
-        setEnhancedResearch(enhancedData.result); // Show enhanced research
-      } else {
-        setError('Could not enhance the segments. Please try again.');
-      }
-    } catch (enhanceError) {
-      console.error('Error enhancing segments:', enhanceError);
-      setError('Could not enhance the segments. Please try again.');
-    } finally {
-      setIsEnhancing(false);
-    }
-  };
-
   const resetGenerator = () => {
     setGeneratedResearch(null);
-    setEnhancedResearch(null);
     setError(null);
-    setCurrentIndustry("");
   };
-
-  // Determine which content to show
-  const displayContent = enhancedResearch || generatedResearch;
-  const isResultEnhanced = !!enhancedResearch;
 
   return (
     <div className="py-10 px-4 container mx-auto">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-[#f7f8f8]">Market Segment Researcher</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-[#f7f8f8]">LinkedIn Sales Navigator Targeting</h1>
           <p className="text-[#8a8f98]">
-            Find ideal Market Segments for Fractional CFO services
+            Generate optimized targeting strategies for your market research segments
           </p>
         </div>
         
@@ -121,14 +72,10 @@ export default function Home() {
         )}
         
         <div className="card">
-          {displayContent ? (
+          {generatedResearch ? (
             <ResearchResult 
-              content={displayContent} 
-              industry={currentIndustry}
+              content={generatedResearch}
               onReset={resetGenerator}
-              onEnhance={!isResultEnhanced ? enhanceSegments : undefined}
-              isEnhanced={isResultEnhanced}
-              isEnhancing={isEnhancing}
             />
           ) : (
             <ResearchForm onSubmit={generateResearch} />
@@ -138,7 +85,7 @@ export default function Home() {
         {isGenerating && (
           <div className="text-center mt-4">
             <p className="text-[#8a8f98]">
-              {progressStatus || 'Generating segments...'}
+              {progressStatus || 'Generating targeting strategy...'}
             </p>
           </div>
         )}
