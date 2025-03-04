@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     }
     
     // Count number of segments (estimate) for the prompt
-    const segmentCount = (segmentInfo.match(/\n\n/g) || []).length + 1;
+    //const segmentCount = (segmentInfo.match(/\n\n/g) || []).length + 1;
     
     const prompt = `
     You are a specialized LinkedIn Sales Navigator outreach strategist with deep expertise in B2B targeting and account-based marketing. Your knowledge extends to market research industry segments, financial services needs, and executive decision-making patterns.
