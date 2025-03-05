@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'Market Segment Research Generator',
-  description: 'Create comprehensive market segment research for any industry in seconds',
+  title: 'LinkedIn Sales Navigator Targeting',
+  description: 'Generate optimized targeting strategies for your market research segments',
 };
 
 export default function RootLayout({
