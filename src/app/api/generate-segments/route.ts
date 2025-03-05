@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         
     🎯 Sales Navigator Filters:
     ✅ Job Titles (Business Decision-Makers & Leaders):
-    [List 10-15 non-finance job titles, one per line, focusing on business owners, executives, and operational leadership who would make decisions about hiring financial services. Include multiple variants of similar roles (Owner, Co-Owner, Founder, Co-Founder, etc.)]
+    [List 20-30 non-finance job titles, one per line, focusing on business owners, executives, and operational leadership who would make decisions about hiring financial services. Include multiple variants of similar roles (Owner, Co-Owner, Founder, Co-Founder, etc.)]
     Examples:
     Owner
     Co-Owner
