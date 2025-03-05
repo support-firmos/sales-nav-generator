@@ -15,45 +15,62 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid segment information' }, { status: 400 });
     }
     
+    // Modified section of the prompt in src/app/api/generate-segments/route.ts
     const prompt = `
-    You are a specialized LinkedIn Sales Navigator outreach strategist with deep expertise in B2B targeting and account-based marketing. Your task is to transform the segment information below into a structured LinkedIn Sales Navigator targeting strategy.
+    You are a specialized LinkedIn Sales Navigator outreach strategist with deep expertise in B2B targeting and account-based marketing. Your task is to transform the segment information below into a structured LinkedIn Sales Navigator targeting strategy for fractional CFO services.
 
     FORMAT YOUR RESPONSE EXACTLY LIKE THIS EXAMPLE (but with your own content):
 
     1️⃣ [SEGMENT NAME]
     Why This Segment?
-    [2-3 sentences explaining why this segment needs fractional CFO services, describing their complexity and pain points]
-    
+    [3-5 sentences explaining why this segment needs fractional CFO services. Provide specific business context, industry challenges, and financial pain points. Detail how their size, growth stage, and business model create a need for sophisticated financial leadership without the cost of a full-time CFO. Explain their complexity and why they're particularly suited for fractional services.]
+        
     Key Challenges:
-    👉 [Challenge 1]—[Brief explanation of the challenge]
-    👉 [Challenge 2]—[Brief explanation of the challenge]
-    👉 [Challenge 3]—[Brief explanation of the challenge]
-    👉 [Challenge 4]—[Brief explanation of the challenge]
-    
+    👉 [Challenge 1]—[Detailed explanation of the challenge with specific examples and business implications]
+    👉 [Challenge 2]—[Detailed explanation of the challenge with specific examples and business implications]
+    👉 [Challenge 3]—[Detailed explanation of the challenge with specific examples and business implications]
+    👉 [Challenge 4]—[Detailed explanation of the challenge with specific examples and business implications]
+        
     🎯 Sales Navigator Filters:
-    ✅ Job Titles (Financial Decision-Makers & Influencers):
-    [List 6-10 job titles, one per line]
-    
+    ✅ Job Titles (Business Decision-Makers & Leaders):
+    [List 10-15 non-finance job titles, one per line, focusing on business owners, executives, and operational leadership who would make decisions about hiring financial services. Include multiple variants of similar roles (Owner, Co-Owner, Founder, Co-Founder, etc.)]
+    Examples:
+    Owner
+    Co-Owner
+    Founder
+    Co-Founder
+    CEO
+    President
+    Managing Director
+    Managing Partner
+    Partner
+    Director
+    Executive Director
+    Chief Operating Officer
+    COO
+    VP of Operations
+    General Manager
+        
     ✅ Industry:
     [List 3-5 industry categories, one per line]
-    
+        
     ✅ Company Headcount:
-    [Specify employee range]
-    
+    [Specify employee range using LinkedIn's standard brackets: 11-50, 51-200, 201-500, etc.]
+        
     ✅ Company Type:
     [List company types, one per line]
-    
+        
     ✅ Keywords in Company Name:
     [List relevant keywords in quotation marks]
-    
+        
     ✅ Boolean Search Query:
     [Provide a sample boolean search string using OR operators]
-    
+        
     Best Intent Data Signals
-    🔹 [Signal 1] (Brief explanation in parentheses)
-    🔹 [Signal 2] (Brief explanation in parentheses)
-    🔹 [Signal 3] (Brief explanation in parentheses)
-    🔹 [Signal 4] (Brief explanation in parentheses)
+    🔹 [Signal 1] (Detailed explanation with specific business implications)
+    🔹 [Signal 2] (Detailed explanation with specific business implications)
+    🔹 [Signal 3] (Detailed explanation with specific business implications)
+    🔹 [Signal 4] (Detailed explanation with specific business implications)
 
     IMPORTANT INSTRUCTIONS:
     - Use the exact emoji formatting shown above (1️⃣, 👉, 🎯, ✅, 🔹)
@@ -61,6 +78,9 @@ export async function POST(request: Request) {
     - Start immediately with "1️⃣" and the first segment name
     - Extract and transform information from the provided segment analysis
     - Focus on creating practical Sales Navigator targeting parameters
+    - For Job Titles: Do NOT include finance roles (CFO, Finance Director, Controller, etc.) since these positions would NOT hire fractional CFO services. Instead, focus on business leaders/owners who would make these decisions.
+    - Include a diverse range of job title variants to maximize the total addressable market
+    - Provide in-depth, detailed explanations for "Why This Segment?" and "Key Challenges" sections
     - End after completing the last segment with no closing remarks
 
     ${segmentInfo.substring(0, 20000)}
